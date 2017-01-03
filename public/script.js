@@ -12,7 +12,7 @@ var port = location.port || (location.protocol === 'https:' ? '443' : '80');
 
 function search(query){
 	$.ajax({
-		url: host + ":" + port + "/search/tweets/" + query,
+		url: "/search/tweets/" + query,
 		success: function(results){
 			counter = 0
 			$.each(results, function(i, result){
