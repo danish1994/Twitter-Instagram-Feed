@@ -5,11 +5,6 @@ $(document).ready(function() {
 var mapRef
 var markers = []
 
-var http = location.protocol;
-var slashes = http.concat("//");
-var host = slashes.concat(window.location.hostname);
-var port = location.port || (location.protocol === 'https:' ? '443' : '80');
-
 function search(query){
 	$.ajax({
 		url: "/search/tweets/" + query,
