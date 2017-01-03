@@ -6,9 +6,11 @@ var mapRef
 var markers = []
 
 function search(query){
+	$('#loading-modal').modal('show')
 	$.ajax({
 		url: "/search/tweets/" + query,
 		success: function(results){
+			$('#loading-modal').modal('hide')
 			counter = 0
 			$.each(results, function(i, result){
 	        	if(counter < 20){
@@ -36,6 +38,7 @@ function search(query){
 			showMarkers()
 	    },
 	    error: function(err){
+			$('#loading-modal').modal('hide')
 	    	console.log(err)
 	    }
 	})
