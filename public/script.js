@@ -5,10 +5,13 @@ $(document).ready(function() {
 var mapRef
 var markers = []
 
+var http = location.protocol;
+var slashes = http.concat("//");
+var host = slashes.concat(window.location.hostname);
 
 function search(query){
 	$.ajax({
-		url: "http://localhost:8081/search/tweets/" + query,
+		url: host + "/search/tweets/" + query,
 		success: function(results){
 			counter = 0
 			$.each(results, function(i, result){
