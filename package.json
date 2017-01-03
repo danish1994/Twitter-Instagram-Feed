@@ -1,0 +1,19 @@
+{
+  "name": "analytics",
+  "version": "1.0.0",
+  "description": "Twitter and Instagram Feed",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "danish",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "express": "^4.14.0",
+    "oauth": "^0.9.14",
+    "request": "^2.79.0",
+    "twitter": "^1.7.0"
+  }
+}
