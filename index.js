@@ -2,7 +2,9 @@ var express = require('express')
 var request = require('request')
 var app     = express()
 var twitter = require('twitter')
-var path = require('path');
+var path = require('path')
+
+var port = process.env.PORT || 8082
 
 
 var keys = require('./keys')
@@ -48,6 +50,6 @@ var getTweets = function(search, res){
 	}
 }
 
-app.listen('8082')
+app.listen(port)
 
 exports = module.exports = app
