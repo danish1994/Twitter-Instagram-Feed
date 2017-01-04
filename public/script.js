@@ -8,6 +8,7 @@ var feeds = []
 
 function search(query){
 	$('#loading-modal').modal('show')
+	$('.feed-container').empty()
 	$.ajax({
 		url: "/search/tweets/" + query,
 		success: function(tweets){
