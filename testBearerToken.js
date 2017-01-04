@@ -4,7 +4,7 @@ var url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
 
 var keys = require('./keys')
 
-var bearer_token = keys.bearer_token
+var bearer_token = keys.tw_bearer_token
 
 var testBearerToken = function(bearerToken){
 	R({ url: url,

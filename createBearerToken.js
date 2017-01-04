@@ -2,8 +2,8 @@ var R = require("request")
 
 var keys = require('./keys')
 
-var key = keys.key
-var secret = keys.secret
+var key = keys.tw_key
+var secret = keys.tw_secret
 
 var cat = key +":"+secret
 var credentials = new Buffer(cat).toString('base64')
