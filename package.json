@@ -13,6 +13,7 @@
     "cheerio": "^0.22.0",
     "express": "^4.14.0",
     "instagram-node": "^0.5.8",
+    "instagram-tagscrape": "^1.0.2",
     "oauth": "^0.9.14",
     "phantomjs": "^2.1.7",
     "request": "^2.79.0",

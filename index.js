@@ -11,6 +11,8 @@ var Xray = require('x-ray')
 var ig = require('instagram-node').instagram()
 
 
+var ig_ts = require('instagram-tagscrape')
+
 var port = process.env.PORT || 8082
 
 
@@ -21,6 +23,7 @@ var tw_secret = keys.tw_secret
 var tw_bearer_token = keys.tw_bearer_token
 var ig_key = keys.ig_key
 var ig_secret = keys.ig_secret
+var ig_access_token = ig_access_token
 
 //Making Path Public
 app.use(express.static(path.join(__dirname, '/public')))
@@ -54,9 +57,14 @@ var getTweets = function(search, res){
 		  bearer_token: tw_bearer_token
 		})
 
-		client.get('search/tweets', {q: search, count: 100}, function(error, tweets, response) {
-			if(tweets){
-				res.send(tweets.statuses)
+		client.get('search/tweets', {q: search, count: 100}, function(err, tweets, response) {
+			if(!err){
+				feeds = tweets.statuses
+				feeds.forEach(function(feed){
+					var date = new Date(feed.created_at)
+					feed.date = date.getTime()
+				})
+				res.send(feeds)
 			}else{
 				res.send({})
 			}
@@ -68,94 +76,13 @@ var getTweets = function(search, res){
 
 var getInsta = function(search, res){
 	try{
-		url = 'https://www.instagram.com/explore/tags/nyc/'
-
-	 //    request(url, function(error, response, html){
-	 //        if(!error){
-	 //            var $ = cheerio.load(html)
-	 //            console.log($)
-	 //            $('._jjzlb').filter(function(){
-	 //                var data = $(this)
-	 //                console.log(data)
-	 //            })
-	 //        }
-	 //    })
-
-		// var x = Xray().driver(phantom())
-		// console.log(x)
-		// options = { 'web-security': 'no' }
-		// x(url, '._jjzlb')(function(err, str) {
-		// 	if (err) return done(err)
-		// 	console.log(str)
-		// 	assert.equal('Google', str)
-		// 	done()
-		// })
-
-		// options = { 'web-security': 'no' }
-
-		// phantom.create({parameters: options},function (ph) {
-		// 	ph.createPage(function (page) {
-		// 		page.open(url, function() {
-		// 			console.log(page)
-		// 			res.send(page)
-		// 				page.evaluate(function($) {
-		// 					console.log($('._jjzlb'))
-		// 					$('.listMain > li').each(function () {
-		// 						console.log($(this).find('a').attr('href'))
-		// 					})
-		// 				}, function(){
-		// 					ph.exit()
-		// 				})
-		// 		})
-		// 	})
-		// })
-
-		ig.use({
-			client_id: ig_key,
-			client_secret: ig_secret
+		ig_ts.scrapeTagPage('bernie').then(function(result){
+		    res.send(result.media)
 		})
-
-		ig.tag_search(search, function(err, result, remaining, limit) {
-			if(err){
-				console.log(err)
-			}else{
-				console.log(result)
-			}
-		})
-
 	}catch(err){
-		console.log(err)
+		console.log('catch '+ err)
 	}
 }
-
-
-var redirect_uri = 'https://limitless-escarpment-55420.herokuapp.com/handleauth';
- 
-ig.use({
-			client_id: ig_key,
-			client_secret: ig_secret
-		})
-
-exports.authorize_user = function(req, res) {
-  res.redirect(ig.get_authorization_url(redirect_uri, { scope: ['public_content'], state: 'a state' }));
-}
- 
-exports.handleauth = function(req, res) {
-  ig.authorize_user(req.query.code, redirect_uri, function(err, result) {
-    if (err) {
-      console.log(err.body);
-      res.send("Didn't work");
-    } else {
-      console.log('Yay! Access token is ' + result.access_token);
-      res.send(result.access_token);
-    }
-  })
-}
- 
-// This is where you would initially send users to authorize 
-app.get('/authorize_user', exports.authorize_user);
-// This is your redirect URI 
-app.get('/handleauth', exports.handleauth);
 
 
 app.listen(port)

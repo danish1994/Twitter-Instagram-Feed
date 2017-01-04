@@ -4,15 +4,55 @@ $(document).ready(function() {
 
 var mapRef
 var markers = []
+var feeds = []
 
 function search(query){
 	$('#loading-modal').modal('show')
 	$.ajax({
 		url: "/search/tweets/" + query,
-		success: function(results){
+		success: function(tweets){
+			$.each(tweets, function(i, result){
+				feeds.push({
+					src: 'twitter',
+					feed: result.text,
+					epoch: result.date,
+					geo: result.geo,
+					date: new Date(result.date),
+					image: result.image
+				})
+	        })
+	    },
+	    error: function(err){
 			$('#loading-modal').modal('hide')
+	    	console.log(err)
+	    }
+	}).then(function(){
+		$.ajax({
+			url: "/search/insta/" + query,
+			success: function(instas){
+				counter = 0
+				$.each(instas, function(i, result){
+					feeds.push({
+						src: 'instagram',
+						feed: result.caption,
+						epoch: result.date,
+						geo: result.geo,
+						date: new Date(result.date*1000),
+						image: result.thumbnail_src
+					})
+		        })
+				showMarkers()
+		    },
+		    error: function(err){
+				$('#loading-modal').modal('hide')
+		    	console.log(err)
+		    }
+		}).then(function(){
 			counter = 0
-			$.each(results, function(i, result){
+			feeds.sort(function(a, b) {
+				return parseFloat(b.epoch) - parseFloat(a.epoch);
+			})
+			$.each(feeds, function(i, result){
 	        	if(counter < 20){
 	        		if(result.geo){
 	        			counter++;
@@ -20,11 +60,11 @@ function search(query){
 	        			
 	        			var marker = new google.maps.Marker({
 						    position: latlng,
-						    title: "Tweet"
+						    title: "News Feed"
 						})
 						
 						var infowindow = new google.maps.InfoWindow({
-							content: contentString(result)
+							content: contentString(result.feed)
 						})
 
 						marker.addListener('click', function() {
@@ -34,18 +74,18 @@ function search(query){
 						markers.push(marker)
 	        		}
 	        	}
+
+	        	$('.feed-container').append(feedPrototype(result))
 	        })
-			showMarkers()
-	    },
-	    error: function(err){
+
+	        showMarkers()
 			$('#loading-modal').modal('hide')
-	    	console.log(err)
-	    }
+		})
 	})
 }
 
-function contentString(tweet){
-	res = '<div>' + tweet.text + '</div>'
+function contentString(feed){
+	res = '<div>' + feed + '</div>'
 	return res
 }
 
@@ -89,3 +129,26 @@ $('#refresh').click(function(){
 	deleteMarkers()
 	search(query)
 })
+
+function feedPrototype(feed){
+	res = '<div class="col-sm-10 col-sm-offset-1 feed">'
+		+ '<div class="row">'
+		+  '<div class="col-sm-12 date">'
+		+ feed.date
+		+  '</div>'
+	if(feed.image != undefined){
+		res += '<div class="col-sm-12 text-center">'
+			+ '<image class="feed-image" src="'+ feed.image +'">'
+			+ '</div>'
+	}
+	res += '<div class="col-sm-12 text-justify">'
+		+ feed.feed
+		+ '</div>'
+		+ '<div class="col-sm-12 text-right source text-capitalize">'
+		+ 'From ' + feed.src
+		+ '</div>'
+		+ '</div>'
+		+ '</div>'
+
+	return res
+}
