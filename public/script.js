@@ -9,6 +9,7 @@ var feeds = []
 function search(query){
 	$('#loading-modal').modal('show')
 	$('.feed-container').empty()
+	feeds = []
 	$.ajax({
 		url: "/search/tweets/" + query,
 		success: function(tweets){
@@ -75,10 +76,10 @@ function search(query){
 						markers.push(marker)
 	        		}
 	        	}
-
 	        	$('.feed-container').append(feedPrototype(result))
 	        })
 
+			console.log(feeds)
 	        showMarkers()
 			$('#loading-modal').modal('hide')
 		})
