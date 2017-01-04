@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	$('.refresh').hide()
 })
 
 var mapRef
@@ -122,6 +122,7 @@ $('#search-form').submit(function(event){
 	deleteMarkers()
 	var query = $(this).serialize().split("=")[1]
 	search(query)
+	$('.refresh').show()
 })
 
 $('#refresh').click(function(){

@@ -46,14 +46,20 @@
 				<div class="col-sm-10 col-sm-offset-1">
 					<div class="row">
 						<div class="col-sm-12">
-							<form class="form-inline" id="search-form">
-								<legend>Search</legend>
-								<div class="form-group">
-									<input type="text" id="search-text" name="search" class="form-control" id="search">
-								</div>
-								<input type="submit" value="Search" class="btn btn-default">
-								<button id="refresh" class="btn btn-default">Refresh</button>
-							</form>
+							<div class="row">
+								<form class="form-inline" id="search-form">
+									<legend>Search</legend>
+									<div class="col-sm-10">
+										<input type="text" id="search-text" name="search" class="form-control full-width" id="search">
+									</div>	
+									<div class="col-sm-2">
+									<input type="submit" value="Search" class="btn btn-default full-width">
+									</div>
+									<div class="col-sm-12">
+										<button id="refresh" class="btn btn-default full-width refresh">Refresh</button>
+									</div>
+								</form>
+							</div>
 						</div>
 						<div class="col-sm-12">
 							<div id="map"></div>
