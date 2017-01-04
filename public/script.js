@@ -35,7 +35,7 @@ function search(query){
 					feeds.push({
 						src: 'instagram',
 						feed: result.caption,
-						epoch: result.date,
+						epoch: result.date*1000,
 						geo: result.geo,
 						date: new Date(result.date*1000),
 						image: result.thumbnail_src
@@ -52,6 +52,7 @@ function search(query){
 			feeds.sort(function(a, b) {
 				return parseFloat(b.epoch) - parseFloat(a.epoch);
 			})
+			console.log(feeds)
 			$.each(feeds, function(i, result){
 	        	if(counter < 20){
 	        		if(result.geo){
