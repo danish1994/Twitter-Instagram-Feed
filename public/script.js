@@ -62,14 +62,15 @@ function search(query){
 	        			
 	        			var marker = new google.maps.Marker({
 						    position: latlng,
-						    title: "News Feed"
+						    title: "News Feed",
+						    maxWidth: 100
 						})
 						
 						var infowindow = new google.maps.InfoWindow({
 							content: contentString(result.feed)
 						})
 
-						marker.addListener('click', function() {
+						marker.addListener('click', function() {							
 							infowindow.open(mapRef, marker)
 						})
 
@@ -135,8 +136,9 @@ $('#refresh').click(function(){
 
 function feedPrototype(feed){
 	res = '<div class="col-sm-10 col-sm-offset-1 feed">'
+		+ '<blockquote class="blockquote ' + feed.src + '-blockqoute">'
 		+ '<div class="row">'
-		+  '<div class="col-sm-12 date">'
+		+ '<div class="col-sm-12 date">'
 		+ feed.date
 		+  '</div>'
 	if(feed.image != undefined){
@@ -147,10 +149,11 @@ function feedPrototype(feed){
 	res += '<div class="col-sm-12 text-justify">'
 		+ feed.feed
 		+ '</div>'
-		+ '<div class="col-sm-12 text-right source text-capitalize">'
+		+ '<div class="col-sm-12 text-right source text-capitalize ' + feed.src + '">'
 		+ 'From ' + feed.src
 		+ '</div>'
 		+ '</div>'
+		+ '</blockquote>'
 		+ '</div>'
 
 	return res
