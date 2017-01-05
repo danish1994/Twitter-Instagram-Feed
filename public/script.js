@@ -5,6 +5,7 @@ $(document).ready(function() {
 var mapRef
 var markers = []
 var feeds = []
+var infoWindows = []
 
 function search(query){
 	$('#loading-modal').modal('show')
@@ -70,9 +71,12 @@ function search(query){
 							content: contentString(result.feed)
 						})
 
-						marker.addListener('click', function() {							
+						marker.addListener('click', function() {	
+							closeAllInfoWindows()						
 							infowindow.open(mapRef, marker)
 						})
+
+						infoWindows.push(infowindow)
 
 						markers.push(marker)
 	        		}
@@ -85,6 +89,12 @@ function search(query){
 			$('#loading-modal').modal('hide')
 		})
 	})
+}
+
+function closeAllInfoWindows(){
+	for (var i=0; i < infoWindows.length; i++){
+		infoWindows[i].close()
+	}
 }
 
 function contentString(feed){
