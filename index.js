@@ -76,7 +76,8 @@ var getTweets = function(search, res){
 
 var getInsta = function(search, res){
 	try{
-		ig_ts.scrapeTagPage(search).then(function(result){
+		search = search.split(' ')
+		ig_ts.scrapeTagPage(search.join('')).then(function(result){
 		    res.send(result.media)
 		})
 	}catch(err){
