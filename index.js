@@ -76,7 +76,7 @@ var getTweets = function(search, res){
 
 var getInsta = function(search, res){
 	try{
-		ig_ts.scrapeTagPage('bernie').then(function(result){
+		ig_ts.scrapeTagPage(search).then(function(result){
 		    res.send(result.media)
 		})
 	}catch(err){
